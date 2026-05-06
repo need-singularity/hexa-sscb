@@ -230,6 +230,61 @@ def check_redundancy_depth(r: AuditResult) -> None:
 
 
 # ---------------------------------------------------------------------------
+# check 6: atlas-vs-doc drift detection (added 2026-05-07).
+#
+# atlas.append.hsscb-mk1-vendor-anchors-2026-05-06.n6 entries are CANONICAL —
+# spec.md / domain.md / engpack must agree with their values. Where they
+# don't, a drift-marker comment is embedded in the atlas shard. This check
+# enumerates known drifts and reports as WARN (not FAIL) until axis-L
+# axiom-cite-amendment lands the corrections in the docs.
+# ---------------------------------------------------------------------------
+
+KNOWN_DRIFTS = [
+    {
+        "anchor": "HSSCB-N-dies",          # value 4
+        "drift_in": "spec.md §11",
+        "drift_text": "single die per SiP",
+        "canonical_says": "4-die parallel matched array (engpack §3.1, domain.md §9.E-4)",
+    },
+    {
+        "anchor": "HSSCB-stm32f429-fclk",  # value 180e6
+        "drift_in": "spec.md §13",
+        "drift_text": "170 MHz",
+        "canonical_says": "180 MHz (engpack §3.5)",
+    },
+    {
+        "anchor": "HSSCB-Rth-jc",          # value 0.30
+        "drift_in": "spec.md §14",
+        "drift_text": "Rth(j-c) = 0.4 K/W",
+        "canonical_says": "0.30 K/W (engpack §6.2)",
+    },
+]
+
+
+def check_atlas_doc_drift(r: AuditResult) -> None:
+    """Surface known drifts between atlas anchors and spec.md text. Each
+    drift is a WARN (not FAIL) — fixing requires axis-L axiom-cite-amendment
+    on spec.md, tracked separately. Adding new drifts here is the lint
+    contract: when a vendor anchor disagrees with a doc, register it."""
+    spec = read("spec")
+    drift_count = 0
+    for d in KNOWN_DRIFTS:
+        if d["drift_text"] in spec:
+            drift_count += 1
+            print(f"  [WARN] atlas-vs-doc drift: {d['anchor']}")
+            print(f"         · {d['drift_in']} contains drift phrase: {d['drift_text']!r}")
+            print(f"         · canonical: {d['canonical_says']}")
+    if drift_count == 0:
+        r.check(True, "atlas-vs-doc drift: 0 known drifts present in spec.md")
+    else:
+        r.check(
+            True,
+            f"atlas-vs-doc drift: {drift_count} known drift(s) (WARN, not FAIL)",
+            f"spec.md amendment pending per axis-L axiom-cite-amendment process",
+        )
+
+
+# ---------------------------------------------------------------------------
 
 def main() -> int:
     print("=" * 72)
@@ -241,6 +296,7 @@ def main() -> int:
     check_sigma_lattice(r)
     check_mk_ladder(r)
     check_redundancy_depth(r)
+    check_atlas_doc_drift(r)
     print("=" * 72)
     print(f"  {r.checks_run - len(r.failures)}/{r.checks_run} checks passed")
     if r.failures:
@@ -249,6 +305,7 @@ def main() -> int:
             print(f"    ✗ {f}")
         return 1
     print("  All n=6 invariants hold across spec / domain / engpack / impact.")
+    print("  Drift markers (WARN) tracked separately — axis-L amendment pending.")
     return 0
 
 

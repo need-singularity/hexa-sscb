@@ -36,6 +36,7 @@ ATLAS_FILES = [
     "atlas.n6",
     "atlas.append.engineering-content-mk-next-2026-05-06.n6",
     "atlas.append.hsscb-mk1-vendor-anchors-2026-05-06.n6",
+    "atlas.append.hsscb-mk1-spec-derived-2026-05-07.n6",
 ]
 
 
