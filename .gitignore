@@ -1,0 +1,23 @@
+# Build artifacts
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python (in case of future scripts)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local agent state
+.claude/
+.hexa-state/
