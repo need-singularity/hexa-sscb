@@ -24,6 +24,16 @@
 
 ---
 
+## Install
+
+```bash
+# 1. Install hexa-lang (gives you `hexa` + `hx` package manager)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"
+
+# 2. Install hexa-sscb
+hx install hexa-sscb
+```
+
 ## What is hexa-sscb?
 
 `hexa-sscb` is a **solid-state DC circuit breaker** that interrupts a 48 V / 100 A
