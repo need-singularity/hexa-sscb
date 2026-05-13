@@ -55,6 +55,34 @@ back to (or propagated upstream to) the source-of-truth.
   `~/Downloads` / `~/Desktop`. The Markdown sources in this repo are the
   pre-PDF originals; PDFs can be regenerated via pandoc if needed.
 
+## Atlas anchor provenance (2026-05-13)
+
+The 4 Python verifiers under `verify/` consume atlas anchor shards (`.n6`)
+that originally lived under `~/core/canon/atlas/`. During the canon → meta-doc
+consolidation (Wave K, 2026-05-12), `~/core/canon/atlas/` was decommissioned
+and the SSCB-relevant shards were absorbed into
+`~/core/nexus/n6/_absorbed/20260508-190356/`.
+
+To keep this repo's verifier surface **self-contained** (no host-machine
+dependency on `~/core/canon` or `~/core/nexus`), the 3 atlas shards needed
+by `verify/atlas_anchors.py` were mirrored into `verify/atlas/`:
+
+| File | Originally absorbed from |
+|---|---|
+| `verify/atlas/atlas.append.engineering-content-mk-next-2026-05-06.n6` | canon/atlas → nexus/n6/_absorbed/20260508-190356/ |
+| `verify/atlas/atlas.append.hsscb-mk1-vendor-anchors-2026-05-06.n6` | canon/atlas → nexus/n6/_absorbed/20260508-190356/ |
+| `verify/atlas/atlas.append.hsscb-mk1-spec-derived-2026-05-07.n6` | canon/atlas → nexus/n6/_absorbed/20260508-190356/ |
+
+`verify/atlas_anchors.py` resolution order: `HSSCB_ATLAS_DIR` env → repo-local
+`verify/atlas/` → legacy `~/core/canon/atlas/` (no-op now). See
+[`verify/atlas/README.md`](../../verify/atlas/README.md) for details.
+
+These vendored shards are **mirrors**, not authoritative. Each anchor remains
+vendor-attributed via its `anchor=<datasheet>/<section>/<vintage>` field per
+LATTICE_POLICY.md §1.2 and raw#10 C3 (no lattice-fit on external entities).
+
+---
+
 ## Re-derivation policy
 
 If you change a file in `core/sscb/` here and want to push it upstream:

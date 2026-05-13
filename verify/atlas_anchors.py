@@ -27,10 +27,20 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-ATLAS_DIR = Path(os.environ.get(
-    "HSSCB_ATLAS_DIR",
-    str(Path.home() / "core" / "canon" / "atlas"),
-))
+# Atlas resolution order:
+#   1. HSSCB_ATLAS_DIR env var (CI override / debug)
+#   2. verify/atlas/ co-located with this file (repo-local, default — see verify/atlas/README.md)
+#   3. ~/core/canon/atlas/ (legacy fallback; only used if the first two miss)
+_REPO_LOCAL_ATLAS = Path(__file__).resolve().parent / "atlas"
+_LEGACY_CANON_ATLAS = Path.home() / "core" / "canon" / "atlas"
+
+_env_dir = os.environ.get("HSSCB_ATLAS_DIR")
+if _env_dir:
+    ATLAS_DIR = Path(_env_dir)
+elif _REPO_LOCAL_ATLAS.exists():
+    ATLAS_DIR = _REPO_LOCAL_ATLAS
+else:
+    ATLAS_DIR = _LEGACY_CANON_ATLAS
 
 ATLAS_FILES = [
     "atlas.n6",

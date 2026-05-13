@@ -14,9 +14,10 @@
 [![Spec: mk1](https://img.shields.io/badge/spec-mk1-informational.svg)](core/sscb/spec.md)
 [![Cutoff: 600 ns](https://img.shields.io/badge/cutoff-600ns-brightgreen.svg)](core/sscb/spec.md)
 [![Foundries: 4](https://img.shields.io/badge/foundries-4_KR-blue.svg)](module/engineering_pack/README.md)
-[![BOM: $30.77](https://img.shields.io/badge/BOM-%2430.77-yellow.svg)](module/engineering_pack/README.md)
+[![BOM: $30.78](https://img.shields.io/badge/BOM-%2430.78-yellow.svg)](module/engineering_pack/README.md)
 [![Verify: 10/10](https://img.shields.io/badge/verify-10%2F10-brightgreen.svg)](verify/sscb_verify.py)
-[![Audit: 10/10](https://img.shields.io/badge/audit-10%2F10-brightgreen.svg)](verify/cross_doc_audit.py)
+[![Audit: 11/11](https://img.shields.io/badge/audit-11%2F11-brightgreen.svg)](verify/cross_doc_audit.py)
+[![Atlas: 10/10](https://img.shields.io/badge/atlas-10%2F10-brightgreen.svg)](verify/sscb_atlas_check.py)
 [![Firmware: builds](https://img.shields.io/badge/firmware-cross--compile-brightgreen.svg)](module/firmware/)
 
 > **Distribution**: GitHub canonical at <https://github.com/dancinlab/hexa-sscb>.
@@ -81,6 +82,7 @@ hexa-sscb/
 │       └── Makefile                   ← arm-none-eabi-gcc cross-compile
 ├── .own                               ← project-local SSOT (mk2 own_v1) — invariants + roles + directives
 ├── verify/                            ← invariant audit (Python stdlib)
+│   └── atlas/                         ← vendored atlas anchor shards (self-contained closure)
 ├── build/                             ← pandoc PDF rebuild
 ├── tests/                             ← pytest acceptance scaffold
 └── doc/
@@ -104,7 +106,7 @@ repositories.
 | [`module/engineering_pack/`](module/engineering_pack/README.md) | Hand-off build package — every number derivable, every claim falsifiable, stdlib-only Python verification appendix | 754 |
 | [`module/impact/`](module/impact/README.md) | §21 IMPACT ladder Mk.I → Mk.V (2026 → 2030) + §22 reduction to two practical questions | 200 |
 | [`module/firmware/`](module/firmware/README.md) | STM32F4 reference firmware (CMSIS-only, host cross-compile) — engineering_pack §5 / domain.md §13 materialized | code |
-| [`verify/`](verify/) | Runnable invariant audit — domain.md §7 11-subsection physics check + cross-document n=6 consistency + BOM σ(6)=12 lattice reduction | code |
+| [`verify/`](verify/) | Runnable invariant audit — §7 physics (10/10) + cross-doc n=6 (11/11) + BOM σ(6)=12 + atlas-anchored nexus (10/10); atlas shards vendored under [`verify/atlas/`](verify/atlas/) for self-contained closure | code |
 | [`build/`](build/) | Pandoc Makefile + xeCJK LaTeX template — rebuilds the three KakaoTalk-shared PDFs from the .md sources | code |
 | [`tests/`](tests/) | pytest scaffold for §16 T-1..T-10 + §19 A-1..A-10 acceptance — bench-only items skipped with reason, doc-bench-independent items auto-run | code |
 
@@ -114,20 +116,27 @@ repositories.
 
 ```bash
 python3 verify/sscb_verify.py        # 10/10 PASS expected (exit 0)
-python3 verify/cross_doc_audit.py    # n=6 consistency across spec/domain/engineering_pack/impact
+python3 verify/cross_doc_audit.py    # 11/11 PASS — n=6 consistency across spec/domain/engineering_pack/impact
 python3 verify/bom_lattice.py        # σ(6)=12 BOM reconciliation, total ≤ $35
+python3 verify/sscb_atlas_check.py   # 10/10 PASS — atlas-anchored nexus check (circular-trap-free)
 make -C build all                    # rebuild 3 PDFs (requires pandoc + xelatex + CJK font)
 make -C module/firmware all          # cross-compile firmware.elf (requires arm-none-eabi-gcc)
 pytest tests/ -v                     # acceptance scaffold; bench-only items skip with reason
 ```
 
-### Last validation sweep — 2026-05-06
+Atlas anchors are vendored under [`verify/atlas/`](verify/atlas/) — the
+verifier resolves `HSSCB_ATLAS_DIR` env var → `verify/atlas/` (repo-local
+default) → `~/core/canon/atlas/` (legacy fallback) in that order, so the
+verify surface is self-contained with no external dependency.
+
+### Last validation sweep — 2026-05-13
 
 | Check | Result | Notes |
 |---|---|---|
-| `verify/sscb_verify.py` | ✅ 10/10 PASS | §7.1 turnoff 266 ns / §7.9 BOM $31.50 / §7.10 schedule 12 mo |
-| `verify/cross_doc_audit.py` | ✅ 10/10 PASS | cutoff_ns ≡ 600, 4-foundry stack present in spec+domain+engpack, σ(6)=12, Mk-ladder monotone |
-| `verify/bom_lattice.py` | ✅ PASS | 19 engpack rows → σ(6)=12 lattice, total $30.77 ≤ $35 |
+| `verify/sscb_verify.py` | ✅ 10/10 PASS | §7.1 turnoff 266 ns / §7.9 BOM $30.78 / §7.10 schedule 12 mo |
+| `verify/cross_doc_audit.py` | ✅ 11/11 PASS (3 WARN drift) | cutoff_ns ≡ 600, 4-foundry stack present in spec+domain+engpack, σ(6)=12, Mk-ladder monotone; 3 WARN markers tracked for axis-L amendment (HSSCB-N-dies / HSSCB-stm32f429-fclk / HSSCB-Rth-jc) |
+| `verify/bom_lattice.py` | ✅ PASS | 19 engpack rows → σ(6)=12 lattice, total $30.78 ≤ $35 |
+| `verify/sscb_atlas_check.py` | ✅ 10/10 PASS / 0 skipped | atlas-anchored nexus check; target/formula/inputs from 3 disjoint atlas anchors (axis-M attributed; circular-trap-free) |
 | `pytest tests/` | ✅ 5 passed / 16 bench-skipped / 0 failed | A-2 / A-3 / A-8 / A-9 (mk1-v1.0 tag) + source-checklist auto-pass; T-1..T-10 / A-1 / A-4..A-7 / A-10 skip with bench/handoff reason |
 | `make -C build all` | ✅ 3 PDFs built | `sscb_mk1.pdf` 98 KB · `_engineering_pack.pdf` 152 KB · `_impact.pdf` 58 KB (`.gitignore`'d, not committed) |
 | `module/firmware/` ARM cross-compile | ✅ `firmware.elf` 1996 B text · 3096 B BSS · ~5 KB total | `arm-none-eabi-gcc 16.1.0` (brew bare-metal) + `-ffreestanding` + repo-local `include/freestanding/stdint.h` shim — no newlib needed; on-target run still requires STM32F429 board + ST-Link |

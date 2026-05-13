@@ -55,6 +55,7 @@
 # - 2026-05-06: repo + folder rename sscb → hexa-sscb (post-extraction). core/sscb/ directory name preserved for n6 upstream sync (1:1 with upstream path).
 # - 2026-05-06: ai-native/CLAUDE.md retired per user directive ("claude.md 금지 -> .own 활용"). Agent scope content reorganized into this .own (mk2 schema). README.md / README.ai.md hierarchy diagrams updated. ai-native/ directory removed.
 # - 2026-05-06: own 1/2/3 land — n=6 master identity, 4-foundry Korean stack contractual, doc-first scope guard with 4 code-permitted directories.
+# - 2026-05-13: closure consolidation — verify/atlas/ vendors 3 atlas shards (post canon→meta-doc decommission) so all 4 Python verifiers run self-contained. atlas_anchors.py resolution order: HSSCB_ATLAS_DIR env → verify/atlas/ → legacy canon/atlas. README scoreboard refreshed: sscb_verify 10/10, cross_doc_audit 11/11 (3 WARN drift), bom_lattice PASS ($30.78≤$35), sscb_atlas_check 10/10. doc/lineage/origin.md gained Atlas anchor provenance section. own 3 unchanged — verify/atlas/ is data under the already-allowed verify/ root.
 
 # hexa-sscb/.own — project-local SSOT layer
 # 포맷: raw-format (.raw 와 동일 파서). 자세한 스펙: hive/self/raw_loader.hexa
