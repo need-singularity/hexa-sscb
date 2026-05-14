@@ -48,6 +48,28 @@
   brief = "HEXA-SSCB family"
   parent = "dancinlab/echoes"
 
+@L l1 := "repo-layout" :: structure [active]
+  AGENTS.tape -> "this file · governance + identity (.tape v1.2)"
+  CITATION.cff -> "file"
+  CLAUDE.md -> "symlink → AGENTS.tape"
+  IMPORTED_FROM_CANON.md -> "documentation"
+  LATTICE_POLICY.md -> "project-local copy of dancinlab real-limits standard"
+  LICENSE -> "license file"
+  LIMIT_BREAKTHROUGH.md -> "per-domain HARD/SOFT_WALL · BREAKABLE_WITH_TECH · UNCLEAR audit"
+  README.ai.md -> "documentation"
+  README.md -> "human intro · 18-block format (atlas/README-FORMAT.md)"
+  TAPE-AUDIT.md -> ".tape v1.x adoption audit ledger"
+  .claude/ -> "Claude Code state (gitignored typically)"
+  .pytest_cache/ -> "subdir (4 items)"
+  build/ -> "build artifacts (gitignored typically) (3 items)"
+  core/ -> "core implementation (1 items)"
+  doc/ -> "documentation (2 items)"
+  module/ -> "subdir (3 items)"
+  papers/ -> "papers / publications (1 items)"
+  sscb/ -> "subdir (1 items)"
+  tests/ -> "test suite (3 items)"
+  verify/ -> "verification scripts (7 items)"
+
 @D g_inherit := "inherits-lattice-policy" :: governance [required]
   rule = "All echoes/LATTICE_POLICY.md rules apply — real-limits-first · lattice-is-tool · verification-anchor-real-limit · no-artificial-ceilings · honesty-obligation-external."
   authority = "[@x_lattice_policy]"
