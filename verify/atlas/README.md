@@ -4,7 +4,6 @@
 > without depending on the (now-relocated) `~/core/canon/atlas/` directory.
 > Each anchor in this directory is **vendor-attributed** via its `anchor=`
 > field (`<datasheet>/<section>/<vintage>`) — per LATTICE_POLICY.md §1.2 and
-> raw#10 C3 (no lattice-fit on external entities; use vendor's own invariants).
 
 ## Files
 

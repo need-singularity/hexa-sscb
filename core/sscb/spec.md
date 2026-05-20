@@ -129,12 +129,10 @@ Shunt 0.5mOhm  -->  Sigma-Delta ADC 24b  --SPI 50MHz-->  MCU Cortex-M4
 
 ```python
 # SSCB mk1 (HEXA-SSCB) — n=6 master-identity verify block
-# own#6 paper-verify-embedded · own#15 reconstruction · own#33 Block A-G
 # pure-stdlib (math.gcd only); math + physics classifier = "both"
 
 from math import gcd
 
-# ---- n=6 master-identity primitives (own#2 Block A) ---------------------
 def divisors(n):
     return [d for d in range(1, n + 1) if n % d == 0]
 
@@ -147,7 +145,6 @@ def tau(n):
 def phi_eul(n):
     return sum(1 for k in range(1, n + 1) if gcd(k, n) == 1)
 
-# own#2 master identity: sigma(n) * phi(n) == n * tau(n) for n=6 == 24
 assert sigma(6) * phi_eul(6) == 6 * tau(6) == 24, "n=6 master identity broken"
 assert sigma(6) == 12, "sigma(6) lattice"
 assert tau(6)   == 4,  "tau(6) foundry count"
@@ -174,7 +171,6 @@ assert cutoff_ns >= tau_drive_ns + 100, "100ns IRQ latency margin violated"
 Rds_on_mOhm        = 5.0               # mOhm conduction loss ceiling
 assert Rds_on_mOhm <= 5.0, "Rds(on) ceiling broken"
 
-# CODATA sanity (scientific notation present for own#6 physics classifier)
 assert 1.6e-19 < e < 1.7e-19, "elementary charge CODATA window"
 
 print(
@@ -379,7 +375,6 @@ Domestication ratio: 5/5 = 100% achievable by Mk.IV; mk1 baseline ~85% (DBC cera
 
 ## mk_history
 
-- Mk.I (2026-05-04): inaugural live precedent paper under own#6 mk2 unified paper-3pack-verify-embedded rule; 48V / 100A unidirectional, 600ns, BOM $35, four-foundry Korean stack.
 - Mk.II (2027-Q3): 400V / 200A bidirectional smash — three free-variable barriers cleared (voltage, direction, cost-density).
 - Mk.III (2028-Q2): 800V HVDC / 300A datacenter-grade.
 - Mk.IV (2029): 1500V / 500A at 100% Korean foundry domestication.

@@ -79,7 +79,6 @@ by `verify/atlas_anchors.py` were mirrored into `verify/atlas/`:
 
 These vendored shards are **mirrors**, not authoritative. Each anchor remains
 vendor-attributed via its `anchor=<datasheet>/<section>/<vintage>` field per
-LATTICE_POLICY.md §1.2 and raw#10 C3 (no lattice-fit on external entities).
 
 ---
 
